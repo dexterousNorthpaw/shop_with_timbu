@@ -44,7 +44,7 @@ To run the application on your emulator
 # Appetize Link 🔗
 
 
-[Appetize Link](https://appetize.io/app/b_yzjf425z3ravxpwc6kxsgqmnee)
+[Appetize Link](https://appetize.io/app/b_sihfkqicpxajiefc5anq5exptm)
 
 ---
 
