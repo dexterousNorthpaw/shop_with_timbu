@@ -7,15 +7,17 @@ class CustomProductWidget extends StatelessWidget {
   final String productName;
   final double productPrice;
   final String assetImage;
-  final String product_id;
+  final String? product_id;
   final int index;
+  final int nindex;
 
   CustomProductWidget({
     required this.productName,
     required this.productPrice,
     required this.assetImage,
-    required this.product_id,
+    this.product_id,
     required this.index,
+    required this.nindex,
   });
 
   @override
@@ -34,7 +36,8 @@ class CustomProductWidget extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => ProductDetailsScreen(
-                              pro: product_id,
+                              pro: product_id, pindex: nindex,
+                              // pindex: nindex,
                             )));
               },
               child: Image(
@@ -94,6 +97,11 @@ class CustomProductWidget extends StatelessWidget {
                 ],
               ),
               Spacer(),
+              // Icon(
+              //   Icons.favorite,
+              //   color: Colors.red,
+              //   size: 10,
+              // ),
               GestureDetector(
                 onTap: () {
                   final p =

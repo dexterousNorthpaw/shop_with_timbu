@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_with_timbu/providers/products_provider.dart';
 
 class CartWithItems extends StatelessWidget {
   final String unique_id;
@@ -6,13 +8,16 @@ class CartWithItems extends StatelessWidget {
   final String productName;
   String unitPrice = "Unit Price";
   final double price;
+  // final VoidCallback delItem;
+  final int index;
 
   CartWithItems(
       {super.key,
       required this.unique_id,
       required this.imageString,
       required this.productName,
-      required this.price});
+      required this.price,
+      required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +42,13 @@ class CartWithItems extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.w600),
                 ),
+                GestureDetector(
+                    onTap: () {
+                      final pvd =
+                          Provider.of<ProductsProvider>(context, listen: false);
+                      pvd.delCartItem(index);
+                    },
+                    child: Image.asset("assets/images/Delete.png"))
               ],
             ),
             Spacer(),

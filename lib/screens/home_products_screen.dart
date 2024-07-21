@@ -19,6 +19,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
     Future.delayed(Duration.zero, () {
       print("x");
       final provider = Provider.of<ProductsProvider>(context, listen: false);
+      provider.items.clear();
       provider.getProducts();
       print("y");
     });
@@ -27,11 +28,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<ProductsProvider>(context);
-    return Padding(
-      padding: const EdgeInsets.only(left: 32, right: 32, top: 32),
-      child: SafeArea(
-        child: Scaffold(
-            body: SingleChildScrollView(
+    return SafeArea(
+      child: Scaffold(
+          body: Padding(
+        padding: const EdgeInsets.only(left: 32, right: 32, top: 32),
+        child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,6 +107,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                             assetImage: provider.items[index].imgUrl,
                             product_id: provider.items[index].id,
                             index: index,
+                            nindex: index,
                           ),
                           SizedBox(
                             width: 20,
@@ -129,28 +131,30 @@ class _ProductsScreenState extends State<ProductsScreen> {
               ),
               const Divider(),
               Flexible(
-                  // flex: 2,
-                  // child: provider.isLoading
-                  //     ? Center(
-                  //         child: CircularProgressIndicator.adaptive(),
-                  //       )
-                  child: GridView.builder(
-                shrinkWrap: true,
-                itemCount: provider.items.length,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 27.0,
-                  mainAxisSpacing: 50.0,
-                ),
-                itemBuilder: (context, index) => CustomProductWidget(
-                  product_id: provider.items[index].id,
-                  productName: provider.items[index].name,
-                  productPrice: provider.items[index].price,
-                  assetImage: provider.items[index].imgUrl,
-                  index: index,
-                ),
-              )),
+                  flex: 2,
+                  child: provider.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator.adaptive(),
+                        )
+                      : GridView.builder(
+                          shrinkWrap: true,
+                          itemCount: provider.items.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 27.0,
+                            mainAxisSpacing: 50.0,
+                          ),
+                          itemBuilder: (context, index) => CustomProductWidget(
+                            product_id: provider.items[index].id,
+                            productName: provider.items[index].name,
+                            productPrice: provider.items[index].price,
+                            assetImage: provider.items[index].imgUrl,
+                            index: index,
+                            nindex: index,
+                          ),
+                        )),
               SizedBox(
                 height: 75,
               ),
@@ -167,17 +171,23 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   ),
                   children: const <Widget>[
                     ProductCollectionWidget(
-                        collectionName: "Cleanse & Prep",
-                        collectionImage: "assets/images/postercleanse.png"),
+                      collectionName: "Cleanse & Prep",
+                      collectionImage: "assets/images/postercleanse.png",
+                      x: "413eaa549bcc46aabe20b9530e2d6119",
+                    ),
                     ProductCollectionWidget(
-                        collectionName: "Mosturize & Protect",
-                        collectionImage: "assets/images/postermoist.png"),
+                      collectionName: "Mosturize & Protect",
+                      collectionImage: "assets/images/postermoist.png",
+                      x: "d2d235987b4a49f382393098f9124383",
+                    ),
                     ProductCollectionWidget(
                         collectionName: "Treat & Nourish",
-                        collectionImage: "assets/images/postertreat.png"),
+                        collectionImage: "assets/images/postertreat.png",
+                        x: "5d624274dacb4df0ae5e1013f2b3a885"),
                     ProductCollectionWidget(
                         collectionName: "Body Care",
-                        collectionImage: "assets/images/posterbodycare.png"),
+                        collectionImage: "assets/images/posterbodycare.png",
+                        x: "af1f91b9e9414217ba1ed18e31a37a56"),
                   ],
                 ),
               ),
@@ -207,11 +217,12 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         productPrice: provider.items[index].price,
                         assetImage: provider.items[index].imgUrl,
                         index: index,
+                        nindex: index,
                       )),
             ],
           ),
-        )),
-      ),
+        ),
+      )),
     );
   }
 }

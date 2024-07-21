@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_with_timbu/heart_icon_icons.dart';
 import 'package:shop_with_timbu/providers/products_provider.dart';
 import 'package:shop_with_timbu/screens/cart.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  final String pro;
+  final String? pro;
+  final int pindex;
 
-  const ProductDetailsScreen({super.key, required this.pro});
+  const ProductDetailsScreen(
+      {super.key, required this.pro, required this.pindex});
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -18,14 +21,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     super.initState();
 
     Future.delayed(Duration.zero, () {
-      print("x");
+      print("xx");
       // w = widget.pro;
       print(widget.pro);
+      print(widget.pindex);
       final prov = Provider.of<ProductsProvider>(context, listen: false);
       prov.getProductDescription(widget.pro);
       print("y");
     });
   }
+
+  bool fav = false;
 
   @override
   Widget build(BuildContext context) {
@@ -88,19 +94,37 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         ),
                       ],
                     ),
-                    Text(
-                      provi.pxd.name ?? "...",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600),
+                    Row(
+                      children: [
+                        Text(
+                          provi.pxd.name ?? "...",
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              final p = Provider.of<ProductsProvider>(context,
+                                  listen: false);
+                              p.addWishList();
+                              setState(() {
+                                fav = !fav;
+                              });
+                            },
+                            icon: fav
+                                ? Icon(
+                                    HeartIcon.heart,
+                                    color: Colors.red,
+                                  )
+                                : Icon(HeartIcon.heart_empty)),
+                      ],
                     ),
                     const Spacer(),
                     SizedBox(
                         height: 126,
                         width: 333,
                         child: Text(provi.pxd.description ?? "No description")),
-                    const Spacer(),
                     const Text(
                       "Made with pure natural ingredients",
                       style: TextStyle(color: Colors.green),
@@ -129,40 +153,56 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          color: Color(0xFFFF408C2B),
-          shape: CircularNotchedRectangle(),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 20,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Sub",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Text("\$ " + provi.pxd.price.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 20)),
-                ],
-              ),
-              Spacer(),
-              Container(
-                  width: 100,
-                  height: 30,
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.white)),
-                  child: Center(
-                      child: Text(
-                    "Add to cart",
-                    style: TextStyle(fontSize: 10, color: Colors.white),
-                  ))),
-              SizedBox(
-                width: 30,
-              )
-            ],
+        bottomNavigationBar: SizedBox(
+          height: 80,
+          child: BottomAppBar(
+            color: Color(0xFFFF408C2B),
+            shape: CircularNotchedRectangle(),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Sub",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Text("\$ " + provi.pxd.price.toString(),
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                  ],
+                ),
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    print("tapped");
+                    final addTo =
+                        Provider.of<ProductsProvider>(context, listen: false);
+                    addTo.addCart(widget.pindex);
+                    print("added ${widget.pindex} to cart");
+                    // addTo.addCart(widget.index);
+                  },
+                  child: Container(
+                      width: 100,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white)),
+                      child: Center(
+                          child: Text(
+                        "Add to cart",
+                        style: TextStyle(fontSize: 10, color: Colors.white),
+                      ))),
+                ),
+                SizedBox(
+                  width: 30,
+                )
+              ],
+            ),
           ),
         ),
       ),
