@@ -93,28 +93,36 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 // color: Colors.red,
                 height: 200,
                 width: 606,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    // physics: const ClampingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: provider.items.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Row(
-                        children: [
-                          CustomProductWidget(
-                            productName: provider.items[index].name,
-                            productPrice: provider.items[index].price,
-                            assetImage: provider.items[index].imgUrl,
-                            product_id: provider.items[index].id,
-                            index: index,
-                            nindex: index,
-                          ),
-                          SizedBox(
-                            width: 20,
+                child: provider.isLoading
+                    ? Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : provider.errorMessage.isNotEmpty
+                        ? Center(
+                            child: Text(provider.errorMessage),
                           )
-                        ],
-                      );
-                    }),
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            // physics: const ClampingScrollPhysics(),
+                            scrollDirection: Axis.horizontal,
+                            itemCount: provider.items.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Row(
+                                children: [
+                                  CustomProductWidget(
+                                    productName: provider.items[index].name,
+                                    productPrice: provider.items[index].price,
+                                    assetImage: provider.items[index].imgUrl,
+                                    product_id: provider.items[index].id,
+                                    index: index,
+                                    nindex: index,
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  )
+                                ],
+                              );
+                            }),
               ),
               const SizedBox(
                 height: 10,
@@ -136,25 +144,30 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       ? Center(
                           child: CircularProgressIndicator.adaptive(),
                         )
-                      : GridView.builder(
-                          shrinkWrap: true,
-                          itemCount: provider.items.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 27.0,
-                            mainAxisSpacing: 50.0,
-                          ),
-                          itemBuilder: (context, index) => CustomProductWidget(
-                            product_id: provider.items[index].id,
-                            productName: provider.items[index].name,
-                            productPrice: provider.items[index].price,
-                            assetImage: provider.items[index].imgUrl,
-                            index: index,
-                            nindex: index,
-                          ),
-                        )),
+                      : provider.errorMessage.isNotEmpty
+                          ? Center(
+                              child: Text(provider.errorMessage),
+                            )
+                          : GridView.builder(
+                              shrinkWrap: true,
+                              itemCount: provider.items.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 27.0,
+                                mainAxisSpacing: 50.0,
+                              ),
+                              itemBuilder: (context, index) =>
+                                  CustomProductWidget(
+                                product_id: provider.items[index].id,
+                                productName: provider.items[index].name,
+                                productPrice: provider.items[index].price,
+                                assetImage: provider.items[index].imgUrl,
+                                index: index,
+                                nindex: index,
+                              ),
+                            )),
               SizedBox(
                 height: 75,
               ),
