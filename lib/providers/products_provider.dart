@@ -32,6 +32,7 @@ class ProductsProvider extends ChangeNotifier {
   final List wishList = [];
 
   String _errorMessage = '';
+  String get errorMessage => _errorMessage;
 
   int cartNo = 0;
   double cartTotalPrice = 0;
@@ -56,15 +57,24 @@ class ProductsProvider extends ChangeNotifier {
           Uri.parse("${baseUrl}products").replace(queryParameters: queryParams),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
-          });
+          }).timeout(const Duration(seconds: 5), onTimeout: () {
+        _errorMessage = "Request timed out. Please try again";
+        _isLoading = false;
+        notifyListeners();
+        return http.Response("Error", 408);
+      });
       print(response.statusCode);
       if (response.statusCode == 200) {
         final myProducts = jsonDecode(response.body)["items"];
         print("started");
+        print(myProducts);
         int x = 0;
         for (int i = 0; i < myProducts.length; i++) {
+          print(myProducts.length);
           items.add(Products.fromMap(myProducts[i]));
           print(items[i].name);
+          print(x);
+
           x += 1;
         }
         print(x);
@@ -87,6 +97,10 @@ class ProductsProvider extends ChangeNotifier {
             _errorMessage =
                 'Not found. The requested resource could not be found.';
             break;
+
+          case 408:
+            _errorMessage = "Request timed out. Please try again";
+            break;
           case 500:
             _errorMessage = 'Internal server error. Please try again later.';
             break;
@@ -96,6 +110,7 @@ class ProductsProvider extends ChangeNotifier {
           default:
             _errorMessage = 'An unknown error occurred. Please try again.';
         }
+        print(_errorMessage);
       }
       return items;
     } catch (e) {

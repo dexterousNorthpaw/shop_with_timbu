@@ -37,7 +37,7 @@ class Products {
   String? description;
   String id;
   String unique_id;
-  String? category;
+  // var category;
 
   bool isAvailable;
 
@@ -50,7 +50,7 @@ class Products {
     required this.description,
     required this.isAvailable,
     required this.unique_id,
-    required this.category,
+    // required this.category,
   });
 
   factory Products.fromMap(Map<String, dynamic> data) {
@@ -64,7 +64,7 @@ class Products {
       description: data['description'],
       isAvailable: data["is_available"],
       imgUrl: '$imageUrl${data['photos'][0]['url']}',
-      category: data["categories"][0]['name'],
+      // category: data["categories"][0],
     );
   }
 }

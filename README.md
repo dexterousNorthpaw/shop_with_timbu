@@ -44,9 +44,9 @@ To run the application on your emulator
 # Appetize Link 🔗
 
 
-[Appetize Link](https://appetize.io/app/b_sihfkqicpxajiefc5anq5exptm)
+[Appetize Link](https://appetize.io/app/b_kv7ffeujg2nf2pyuxebtgbgndy)
 
 ---
 
 # Google drive link 🔗
-[Apk link](https://drive.google.com/drive/folders/1PmG4CcQKtiFFhFvpQyeiymcIugf2lCA3?usp=sharing)
+[Apk link](https://drive.google.com/drive/folders/1SC7rp4y-gZ-aJRN-c0Yls4ZaT9xWKajQ?usp=sharing)
